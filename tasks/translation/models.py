@@ -50,9 +50,12 @@ class VLLMCausalLLM:
             **kwargs
         )
 
-    def chat(self, messages, temperature=0.0, max_tokens=512):
+    def chat(self, messages, temperature=0.0, max_tokens=512, chat_template_kwargs=None):
         sampling_params = SamplingParams(temperature=temperature, max_tokens=max_tokens)
-        response = self.model.chat(messages, sampling_params=sampling_params)
+        kwargs = {}
+        if chat_template_kwargs:
+            kwargs["chat_template_kwargs"] = chat_template_kwargs
+        response = self.model.chat(messages, sampling_params=sampling_params, **kwargs)
         outputs = [r.outputs[0].text.strip() for r in response]
         return outputs
 

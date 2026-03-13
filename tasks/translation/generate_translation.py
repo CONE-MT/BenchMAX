@@ -57,6 +57,7 @@ def main():
     parser.add_argument("--output-parser", type=str, default=None)
     parser.add_argument("--output-dir", type=str, default="./output")
     parser.add_argument("--force-regenerate", action="store_true", help="Force regeneration even if output files exist")
+    parser.add_argument("--disable-thinking", action="store_true", help="Disable thinking mode for models like Qwen3")
     args, unknown_args = parser.parse_known_args()
     unknown_args_dict = {unknown_args[i].lstrip('--'): handle_arg_string(unknown_args[i + 1]) for i in range(0, len(unknown_args), 2)}
 
@@ -118,7 +119,10 @@ def main():
 
     print("Generating translations...")
     print(messages[0])
-    outputs = model.chat(messages, temperature=0.0, max_tokens=args.max_tokens)
+    chat_kwargs = {}
+    if args.disable_thinking:
+        chat_kwargs["chat_template_kwargs"] = {"enable_thinking": False}
+    outputs = model.chat(messages, temperature=0.0, max_tokens=args.max_tokens, **chat_kwargs)
     outputs = model_output_parser.parse(outputs)
     post_process(outputs, task_name)
 

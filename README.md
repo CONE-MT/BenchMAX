@@ -227,6 +227,7 @@ cd BenchMAX/tasks/translation
 
 # generate general translations
 # -s denotes source languages, -t denotes target languages
+# add --disable-thinking to turn off thinking mode
 python generate_translation.py -s en -t zh,es,fr,de,ru,ja,th,sw,bn,te,ar,ko,vi,cs,hu,sr --task-name flores --model-name $model --infer-backend vllm --max-tokens 512
 python generate_translation.py -s zh,es,fr,de,ru,ja,th,sw,bn,te,ar,ko,vi,cs,hu,sr -t en --task-name flores --model-name $model --infer-backend vllm --max-tokens 512
 python generate_translation.py -s en -t zh,es,fr,de,ru,ja,th,bn,ar,ko,vi,cs,hu,sr --task-name ted --model-name $model --infer-backend vllm --max-tokens 512
